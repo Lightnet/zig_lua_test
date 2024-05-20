@@ -57,6 +57,8 @@ pub fn build(b: *std.Build) void {
     const c_flags = [_][]const u8{
         "-std=c99",
         "-O2",
+        "-DLUA_USE_WINDOWS",
+        //"-DLUA_USE_POSIX",
     };
     //_ = c_flags;
 

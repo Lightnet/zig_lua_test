@@ -1,37 +1,35 @@
 const std = @import("std");
 
-const c = @cImport({
+const lua = @cImport({
     //@cInclude("luaconf.h");
     @cInclude("lua.h");
     @cInclude("lauxlib.h");
     @cInclude("lualib.h");
 });
 
+//pub const LUA_BYTECODE = @embedFile("luac.out");
+
 pub fn main() !void {
     std.debug.print("Hello World!\n", .{});
 
     //const L: c.lua_State = c.luaL_newstate();
-    const L = c.luaL_newstate();
+    const S = lua.luaL_newstate();
 
-    c.luaL_openlibs(L);
+    lua.luaL_openlibs(S);
 
-    //const status = try c.luaL_loadfile(L, "script.lua");
+    //const load_status = lua.luaL_loadbufferx(S, LUA_BYTECODE, LUA_BYTECODE.len, "main.lua", "bt");
 
-    // if (status) {
-    //     std.debug.print("Couldn't load file: {s}!\n", .{c.lua_tostring(L, -1)});
-    // }
-
-    c.lua_newtable(L);
+    lua.lua_newtable(S);
 
     // for (0..5) |i| {
     //     c.lua_pushnumber(L, i); // Push the table index
     //     c.lua_pushnumber(L, i * 2); // Push the cell value
     //     c.lua_rawset(L, -3); // Stores the pair in the table
     // }
-    c.lua_pop(L, 1); // Take the returned value out of the stack
-    c.lua_setglobal(L, "foo");
+    lua.lua_pop(S, 1); // Take the returned value out of the stack
+    lua.lua_setglobal(S, "foo");
 
-    defer c.lua_close(L);
+    defer lua.lua_close(S);
 }
 
 // pub fn main() !void {
